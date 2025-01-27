@@ -97,17 +97,6 @@ boston-house-price-prediction/
 ├── README.md                 # Documentation (this file)
 ```
 
----
-
-## Screenshots
-
-### Home Page
-![Home Page](https://via.placeholder.com/1024x600.png?text=App+Homepage)
-
-### Feature Importance
-![Feature Importance](https://via.placeholder.com/1024x600.png?text=Feature+Importance+Visualization)
-
----
 
 ## Future Improvements
 
