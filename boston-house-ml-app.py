@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestRegressor
+import shap
 
 st.write("""
 # Boston House Price Prediction App
@@ -10,8 +11,9 @@ This app predicts the **Boston House Price**!
 """)
 st.write('---')
 
-# Load the Boston House Price Dataset
-df = pd.read_csv('C:/Users/Muhammad Rasoul/Desktop/Streamlit_Project/BostonHouse.csv')
+# Load the Boston House Price Dataset from GitHub
+csv_url = 'https://raw.githubusercontent.com/rasoul1234/Boston-House-Price/main/BostonHouse.csv'
+df = pd.read_csv(csv_url)
 X = df.drop('Price', axis=1)
 Y = df['Price']
 
@@ -56,13 +58,13 @@ def user_input_features():
     return features
 
 # Get user input
-df = user_input_features()
+df_input = user_input_features()
 
 # Main Panel
 
 # Display specified input parameters
 st.header('Specified Input parameters')
-st.write(df)
+st.write(df_input)
 st.write('---')
 
 # Build Regression Model
@@ -70,33 +72,25 @@ model = RandomForestRegressor()
 model.fit(X, Y)
 
 # Apply Model to Make Prediction
-prediction = model.predict(df)
+prediction = model.predict(df_input)
 
 st.header('Prediction of MEDV (Median Value of Owner-Occupied Homes in $1000)')
 st.write(prediction)
 st.write('---')
 
-
-# Explaining the model's predictions using SHAP values
-# (If shap is required, uncomment and install shap library)
-
-# Uncomment this section if you want to use SHAP for model explainability
-import shap
-import matplotlib.pyplot as plt
+# Feature Importance with SHAP
+st.header('Feature Importance')
 
 explainer = shap.TreeExplainer(model)
 shap_values = explainer.shap_values(X)
 
-# Feature Importance Header
-st.header('Feature Importance')
-
 # SHAP summary plot
-plt.figure()  # Create a new figure for the summary plot
+plt.figure()
 shap.summary_plot(shap_values, X)
-st.pyplot(plt.gcf())  # Pass the current figure explicitly
+st.pyplot(plt.gcf())
 st.write('---')
 
 # SHAP bar plot
-plt.figure()  # Create another figure for the bar plot
+plt.figure()
 shap.summary_plot(shap_values, X, plot_type="bar")
-st.pyplot(plt.gcf())  # Pass the current figure explicitly
+st.pyplot(plt.gcf())
